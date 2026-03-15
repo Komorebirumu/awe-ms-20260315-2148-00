@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Recipe Adaptor: Your Niche Culinary Companion</title>
+    <meta name="description" content="Effortlessly adapt any recipe to your dietary needs (vegan, gluten-free, keto, low-FODMAP) or make ingredient substitutions with our AI-powered tool. Get precise measurements and flavor pairing suggestions.">
+    <meta property="og:title" content="AI Recipe Adaptor: Your Niche Culinary Companion">
+    <meta property="og:description" content="Effortlessly adapt any recipe to your dietary needs (vegan, gluten-free, keto, low-FODMAP) or make ingredient substitutions with our AI-powered tool. Get precise measurements and flavor pairing suggestions.">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #34495e;
+        }
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+            font-size: 16px;
+        }
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #1abc9c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #16a085;
+        }
+        #results {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            border: 1px dashed #95a5a6;
+        }
+        #results h2 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+        .result-item {
+            margin-bottom: 15px;
+        }
+        .result-item strong {
+            color: #34495e;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            button {
+                font-size: 16px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>AI Recipe Adaptor</h1>
+        <p style="text-align: center; color: #555; margin-bottom: 30px;">Transform your favorite recipes with intelligent dietary adaptations and ingredient swaps.</p>
+
+        <!-- AD_SLOT -->
+
+        <div class="form-group">
+            <label for="recipeInput">Paste Your Recipe Here:</label>
+            <textarea id="recipeInput" placeholder="e.g., Ingredients: 2 cups flour, 1 cup sugar, 3 eggs, 1 tsp vanilla extract. Instructions: Mix all ingredients and bake at 350F for 30 minutes."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="adaptationType">Choose Adaptation Type:</label>
+            <select id="adaptationType">
+                <option value="vegan">Vegan</option>
+                <option value="gluten-free">Gluten-Free</option>
+                <option value="keto">Keto</option>
+                <option value="low-fodmap">Low-FODMAP</option>
+                <option value="custom-substitution">Custom Ingredient Substitution</option>
+            </select>
+        </div>
+
+        <div id="substitutionInput" class="form-group" style="display: none;">
+            <label for="substituteIngredient">Ingredient to Substitute:</label>
+            <input type="text" id="substituteIngredient" placeholder="e.g., Butter">
+            <label for="replacementIngredient">Replacement Ingredient:</label>
+            <input type="text" id="replacementIngredient" placeholder="e.g., Coconut Oil">
+        </div>
+
+        <button onclick="adaptRecipe()">Adapt Recipe</button>
+
+        <!-- AD_SLOT -->
+
+        <div id="results" style="display: none;">
+            <h2>Adapted Recipe</h2>
+            <div class="result-item">
+                <strong>Ingredients:</strong>
+                <p id="adaptedIngredients"></p>
+            </div>
+            <div class="result-item">
+                <strong>Instructions:</strong>
+                <p id="adaptedInstructions"></p>
+            </div>
+            <div class="result-item">
+                <strong>Flavor Pairing Suggestions:</strong>
+                <p id="flavorPairings"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI-GENERATED: Autonomous Wealth Engine -->
+
+    <footer>
+        Built with ❤️ | AI-generated tool
+    </footer>
+
+    <script>
+        document.getElementById('adaptationType').addEventListener('change', function() {
+            const substitutionInputDiv = document.getElementById('substitutionInput');
+            if (this.value === 'custom-substitution') {
+                substitutionInputDiv.style.display = 'block';
+            } else {
+                substitutionInputDiv.style.display = 'none';
+            }
+        });
+
+        function adaptRecipe() {
+            const recipeInput = document.getElementById('recipeInput').value;
+            const adaptationType = document.getElementById('adaptationType').value;
+            const substituteIngredient = document.getElementById('substituteIngredient').value;
+            const replacementIngredient = document.getElementById('replacementIngredient').value;
+
+            if (!recipeInput) {
+                alert("Please paste your recipe first.");
+                return;
+            }
+
+            // Simulate AI processing and adaptation
+            // In a real application, this would involve API calls to an AI model
+            let adaptedIngredients = recipeInput;
+            let adaptedInstructions = "Simulated AI adaptation.";
+            let flavorPairings = "Simulated AI flavor suggestions.";
+
+            // Basic simulation logic (replace with actual AI integration)
+            if (adaptationType === 'vegan') {
+                adaptedIngredients = recipeInput.replace(/eggs/gi, 'flax eggs (1 tbsp flaxseed meal + 3 tbsp water per egg)')
+                                       .replace(/milk/gi, 'plant-based milk (e.g., almond, soy)')
+                                       .replace(/butter/gi, 'vegan butter or coconut oil');
+                adaptedInstructions = "Ensure all ingredients are plant-based. Use dairy-free alternatives as noted.";
+            } else if (adaptationType === 'gluten-free') {
+                adaptedIngredients = recipeInput.replace(/flour/gi, 'gluten-free flour blend (e.g., rice flour, almond flour)')
+                                       .replace(/bread/gi, 'gluten-free bread');
+                adaptedInstructions = "Use certified gluten-free ingredients for best results.";
+            } else if (adaptationType === 'keto') {
+                adaptedIngredients = recipeInput.replace(/sugar/gi, 'keto-friendly sweetener (e.g., erythritol, stevia)')
+                                       .replace(/flour/gi, 'almond flour or coconut flour')
+                                       .replace(/potato/gi, 'cauliflower');
+                adaptedInstructions = "Focus on high-fat, low-carb ingredients. Avoid sugars and starches.";
+            } else if (adaptationType === 'low-fodmap') {
+                adaptedIngredients = recipeInput.replace(/onion/gi, 'green onion tops (white parts removed)')
+                                       .replace(/garlic/gi, 'garlic-infused oil (discard garlic cloves)')
+                                       .replace(/wheat/gi, 'gluten-free grains');
+                adaptedInstructions = "Strictly follow low-FODMAP guidelines, paying attention to portion sizes and ingredient types.";
+            } else if (adaptationType === 'custom-substitution' && substituteIngredient && replacementIngredient) {
+                adaptedIngredients = recipeInput.replace(new RegExp(substituteIngredient, 'gi'), replacementIngredient);
+                adaptedInstructions = `Substituted ${substituteIngredient} with ${replacementIngredient}.`;
+            }
+
+            // Simulate flavor pairings
+            if (adaptationType === 'vegan') {
+                flavorPairings = "Consider adding nutritional yeast for a cheesy flavor, or smoked paprika for depth.";
+            } else if (adaptationType === 'keto') {
+                flavorPairings = "Herbs like rosemary and thyme complement keto dishes well. A touch of chili can add warmth.";
+            }
+
+            document.getElementById('adaptedIngredients').textContent = adaptedIngredients;
+            document.getElementById('adaptedInstructions').textContent = adaptedInstructions;
+            document.getElementById('flavorPairings').textContent = flavorPairings;
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
